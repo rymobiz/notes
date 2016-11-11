@@ -1,0 +1,92 @@
+cd t
+
+node_modules/.bin/tl copy "http://localhost:8080/cores11/{z}/{x}/{y}.pbf" mbtiles://./tiles.mbtiles
+
+node_modules/.bin/tl info "http://localhost:8080/cores11/{z}/{x}/{y}.pbf"
+
+
+node_modules/.bin/tl copy -z 11 -Z 11 -r "tilelive-vector" -b "-127.792969 22.431340 -64.863281 50.958427" "http://localhost:8080/cores11/{z}/{x}/{y}.pbf" mbtiles://./tiles.mbtiles
+
+node_modules/.bin/tl copy -z 0 -Z 5 -b "-127.792969 22.431340 -64.863281 50.958427" "http://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v7/{z}/{x}/{y}.mvt?access_token=pk.eyJ1IjoiamVsZGVyIiwiYSI6InpCTmhMdm8ifQ.lJcqxcME79NwtzwTNX2qNw" mbtiles://./tilesmapbox.mbtiles
+
+
+ mb-util tilesmapbox.mbtiles tilesmapbox1.mbtiles
+
+
+ node_modules/.bin/tl copy -z 0 -Z 10 -b "-3.395462 54.355356 -2.619553 54.678992" "http://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiamVsZGVyIiwiYSI6InpCTmhMdm8ifQ.lJcqxcME79NwtzwTNX2qNw" mbtiles://./lake-district.mbtiles
+
+
+
+ node_modules/.bin/tl copy -z 0 -Z 10 -b "-3.395462 54.355356 -2.619553 54.678992" "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png" mbtiles://./osm.mbtiles
+
+
+
+ node_modules/.bin/tl copy -z 0 -Z 10 -b "-111.6 38.1 -93.0 45.7" "https://vector.mapzen.com/osm/all/{z}/{x}/{y}.mvt?api_key=vector-tiles-LM25tq4" mbtiles://./mapzen.mbtiles
+
+
+
+ node_modules/.bin/tl copy -z 0 -Z 11 -b "-3.395462 54.355356 -2.619553 54.678992" "http://localhost:8000/?z={Z}&x={X}&y={Y}" mbtiles://./core11fromryan.mbtiles
+
+
+ node_modules/.bin/tl copy -z 0 -Z 11 -b "-3.395462 54.355356 -2.619553 54.678992" "http://localhost:8000/{Z}/{X}/{Y}/" mbtiles://./core11fromryan.mbtiles
+
+node_modules/.bin/tl copy -z 8 -Z 9 -b "-111.6 38.1 -93.0 45.7" "http://localhost:8000/{Z}/{X}/{Y}/" mbtiles://./core11fromryan.mbtiles
+
+node_modules/.bin/tl copy -z 0 -Z 11 -b "-131.3 22.8 -63.1 50.6" "http://localhost:8000/{Z}/{X}/{Y}/" mbtiles://./core11fromryan0-11.mbtiles
+
+node_modules/.bin/tl copy -z 0 -Z 12 -b "-126.12 24.21 -65.92 50.51" "http://localhost:8000/{Z}/{X}/{Y}/" mbtiles://./core11fromryan0-12.mbtiles
+
+node_modules/.bin/tl copy -z 3 -Z 3 -b "-131.3 22.8 -63.1 50.6" "http://localhost:8000/{Z}/{X}/{Y}/" mbtiles://./three.mbtiles
+
+
+
+-130.3 21.41 -61.04 53.62
+
+-107.09 34.85 -91.27 43.99
+
+-11701591.7861 4285365.5538 -10664494.1863 5126784.3611
+
+
+
+*** sql to find projection info postgis in pgadmin2 
+http://postgis.refractions.net/documentation/manual-1.5/Find_SRID.html
+
+SELECT Find_SRID('public', 'cores', 'geom');
+
+
+*** duplicate table
+
+CREATE TABLE "coresalbers" AS SELECT * from "cores";
+
+*** project to another projection
+
+ALTER TABLE coresalbers
+ ALTER COLUMN geom TYPE geometry(MultiPolygon,2163) 
+  USING ST_Transform(geom,2163);
+
+
+  ***get bounding box for postgis 
+
+  select ST_Extent(geom) from coresalbers;
+
+  "BOX()"
+
+
+
+
+****SPRITES
+
+https://github.com/mapbox/mapbox-gl-js/issues/822
+
+
+
+/Users/ryanmor/projects/specialprojects-green-spaces/node_modules/spritezero-cli/bin
+
+
+gru
+
+
+
+
+
+

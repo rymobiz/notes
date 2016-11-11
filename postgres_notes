@@ -1,0 +1,40 @@
+#start server
+
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+
+# create new postgres database
+
+in PgAdmin3 right-click "Databases" and select "New Database"
+
+# add postgis extension
+
+click on public schema, Tools > Query Tool, enter the following "CREATE EXTENSION postgis;" press Play
+
+#import gdb to postgres
+
+shp2pgsql -I -s 3857 world.shp borders | psql -U ryanmor -d databasename
+
+####did i pull in geodatabase directly to postgis?? more tk
+
+
+
+
+
+
+********** mapbox branch green spaces
+
+mbtile-server-master node server js to serve to 8080 (this is the data made with tippycanoe)
+
+*********** to scrape raster tiles
+
+/Users/ryanmor/projects/mapssandbox/node-mapnik-sample-code
+
+nvm ls
+
+nvm use v0.10.47
+
+/Users/ryanmor/projects/mapssandbox/node-mapnik-sample-code/tile
+
+node ./database/app.js
+
+shp2pgsql world.shp test | psql -U ryanmor -d test

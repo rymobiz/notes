@@ -1,0 +1,47 @@
+ogr2ogr -f PostgreSQL -t_srs EPSG:3857 PG:'user=ryanmor host=localhost dbname=cores' Cores_Poly.shp
+
+ogr2ogr -f PostgreSQL -skipfailures -overwrite  -t_srs EPSG:3857 PG:'user=ryanmor host=localhost dbname=cores' Cores_Poly.shp
+
+ createdb cores
+
+ createdb usa2
+ createlang plpgsql usa2
+ psql -d usa2 -f postgis.sql
+ psql -d usa2 -f spatial_ref_sys.sql
+
+
+
+shp2pgsql -I -s 3857 world.shp borders | psql -U postgres -d ryan
+
+
+
+psql --version
+
+
+#start server
+
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+
+ogr2ogr world.shp -t_srs "EPSG:3857" -skipfailures -overwrite ne_10m_admin_0_countries.shp
+
+#import to postgres
+shp2pgsql -I -s 3857 world.shp borders | psql -U ryanmor -d ryan
+
+
+
+#node mapnik docs
+
+http://mapnik.org/documentation/node-mapnik/3.5/
+
+#polymaps docs
+
+http://polymaps.org/docs/
+
+#shp2pgsql reference
+
+http://www.bostongis.com/pgsql2shp_shp2pgsql_quickguide.bqg
+http://suite.opengeo.org/opengeo-docs/dataadmin/pgGettingStarted/shp2pgsql.html
+
+#create spatial database pgadmin
+
+http://workshops.boundlessgeo.com/postgis-intro/creating_db.html
